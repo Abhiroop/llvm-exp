@@ -1,4 +1,8 @@
+{-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 module Codegen where
+
+import Control.Monad.State
 
 import LLVM.AST
 
@@ -12,7 +16,7 @@ type SymbolTable = [(String, Operand)]
 data BlockState
   = BlockState {
     idx :: Int
-  , stack :: [Named Instruction]
+  , stack :: [Named Instruction]  -- the actual stack of instructions
   , term  :: Maybe (Named Terminator)
   } deriving Show
 
@@ -27,3 +31,6 @@ data CodegenState
   } deriving Show
 
 type Names = Map.Map String Int
+
+newtype Codegen a = Codegen { runCodegen :: State CodegenState a }
+  deriving (Functor, Applicative, Monad, MonadState CodegenState)
