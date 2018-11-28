@@ -34,13 +34,17 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - experiment
-    - monad-par
-    - vector
     - clash-ghc
     - clash-prelude
-    - parsec
+    - containers
+    - experiment
     - haskeline
+    - llvm-hs
+    - llvm-hs-pure
+    - monad-par
+    - mtl
+    - parsec
+    - vector
 
 tests:
   experiment-test:

@@ -1,14 +1,24 @@
 module Main where
 
-import Lib
+import Control.Monad.Trans
+import System.Console.Haskeline
 
-import Control.Monad.Par
-import Data.Vector
+import Parser
 
-parMap :: NFData b => (a -> b) -> Vector a -> Vector b
-parMap f as = runPar $ do
-    ibs <- Data.Vector.mapM (spawn . return . f) as
-    Data.Vector.mapM get ibs
+process :: String -> IO ()
+process line = do
+  let res = parseToplevel line
+  case res of
+    Left err -> print err
+    Right ex -> mapM_ print ex
 
 main :: IO ()
-main = someFunc
+main = runInputT defaultSettings loop
+  where
+    loop = do
+      minput <- getInputLine "ready> "
+      case minput of
+        Nothing -> outputStrLn "Goodbye."
+        Just input -> do
+          liftIO $ process input
+          loop
