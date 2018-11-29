@@ -34,11 +34,13 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
+    - bytestring
     - clash-ghc
     - clash-prelude
     - containers
     - experiment
     - haskeline
+    - hxt-unicode
     - llvm-hs
     - llvm-hs-pure
     - monad-par
